@@ -1,70 +1,72 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import {StyleSheet, SafeAreaView, View, Text, Animated} from 'react-native';
+import {CardComponent} from "@/components/Card";
+import ScrollView = Animated.ScrollView;
+import {useProductsSelected} from "@/contexts/productContext";
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+const arrayOfProducts = [
+  {
+    title: 'MacBook Air',
+    price: 100,
+    source: 'https://7x7.com.ar/wp-content/uploads/2023/08/MacBook-Air-con-M1-1000x600-1.jpg',
+  },
+  {
+    title: 'Microsoft Book',
+    price: 200,
+    source: 'https://7x7.com.ar/wp-content/uploads/2023/08/MacBook-Air-con-M1-1000x600-1.jpg',
+  },
+  {
+    title: 'Lenovo Legion',
+    price: 300,
+    source: 'https://7x7.com.ar/wp-content/uploads/2023/08/MacBook-Air-con-M1-1000x600-1.jpg',
+  },
+];
 
 export default function HomeScreen() {
+
+  const { addProductSelected } = useProductsSelected();
+
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+      <SafeAreaView style={styles.pageContainer}>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>Add To Cart</Text>
+        </View>
+        <ScrollView contentContainerStyle={styles.productContainer}>
+          {arrayOfProducts.map((product, index) => (
+              <CardComponent
+                  key={index}
+                  title={product.title}
+                  price={product.price}
+                  source={product.source}
+                  addProduct={addProductSelected}
+              />
+          ))}
+        </ScrollView>
+      </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  pageContainer: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: 'black'
+  },
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
+    justifyContent: 'center',
+    marginBottom: 16,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  title: {
+    fontSize: 32,
+    fontWeight: '600',
+    color: 'white'
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
+  productContainer: {
+    padding: 16,
+    display: 'flex',
+    gap: 16,
+  }
 });
