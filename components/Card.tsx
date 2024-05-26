@@ -15,9 +15,9 @@ export const CardComponent = ({ title, price, source, addProduct }: CardProps) =
     const handleAddProduct = () => {
         if (quantity) {
             const product: Product = {
-                title,
+                id: title,
                 price,
-                quantity: parseInt(quantity, 10),
+                qty: parseInt(quantity),
             };
             addProduct(product);
             setQuantity('');

@@ -13,17 +13,23 @@ interface ProductsProviderProps {
     children: ReactNode;
 }
 
-// Create the provider component
 export const ProductsProvider: React.FC<ProductsProviderProps> = ({ children }) => {
     const [productsSelected, setProductsSelected] = useState<Product[]>([]);
 
     const addProductSelected = (product: Product) => {
+        const productIndex = productsSelected.findIndex((p) => p.id === product.id);
+        if (productIndex !== -1) {
+            const newProducts = [...productsSelected];
+            newProducts[productIndex].qty += product.qty;
+            setProductsSelected(newProducts);
+            return;
+        }
         setProductsSelected((prevProducts) => [...prevProducts, product]);
     };
 
     const removeProductSelected = (product: Product) => {
         setProductsSelected((prevProducts) =>
-            prevProducts.filter((p) => p.title !== product.title)
+            prevProducts.filter((p) => p.id !== product.id)
         );
     };
 

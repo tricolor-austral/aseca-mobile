@@ -2,6 +2,9 @@ import {StyleSheet, SafeAreaView, View, Text, Animated} from 'react-native';
 import {CardComponent} from "@/components/Card";
 import ScrollView = Animated.ScrollView;
 import {useProductsSelected} from "@/contexts/productContext";
+import {useEffect, useState} from "react";
+import {getProducts} from "@/api";
+import {Product} from "@/utils/types";
 
 const arrayOfProducts = [
   {
@@ -23,8 +26,20 @@ const arrayOfProducts = [
 
 export default function HomeScreen() {
 
-  const { addProductSelected } = useProductsSelected();
+  const [products, setProducts] = useState<Product[]>([])
 
+  useEffect(() => {
+    async function fetch() {
+      const response = await getProducts();
+      if (response) {
+        const products = response.data;
+        setProducts(products)
+      }
+    }
+    fetch();
+  }, []);
+
+  const { addProductSelected } = useProductsSelected();
 
   return (
       <SafeAreaView style={styles.pageContainer}>
@@ -32,12 +47,12 @@ export default function HomeScreen() {
           <Text style={styles.title}>Add To Cart</Text>
         </View>
         <ScrollView contentContainerStyle={styles.productContainer}>
-          {arrayOfProducts.map((product, index) => (
+          {products.map((product, index) => (
               <CardComponent
                   key={index}
-                  title={product.title}
+                  title={product.id}
                   price={product.price}
-                  source={product.source}
+                  source={"https://7x7.com.ar/wp-content/uploads/2023/08/MacBook-Air-con-M1-1000x600-1.jpg"}
                   addProduct={addProductSelected}
               />
           ))}

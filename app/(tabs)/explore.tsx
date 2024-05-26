@@ -11,6 +11,13 @@ import ScrollView = Animated.ScrollView;
 import {Button} from "react-native-paper";
 import {useProductsSelected} from "@/contexts/productContext";
 import {Product} from "@/utils/types";
+import {buyProducts, getProducts} from "@/api";
+
+const buyers = [
+    "60361e51-2613-4454-af1c-b1481293a0e1",
+    "7f28232b-e554-4f8e-ad59-aadc108f1911",
+    "cd7e8069-aae4-4761-9a1b-eb7c189c2e23"
+];
 
 export default function Cart() {
 
@@ -18,6 +25,11 @@ export default function Cart() {
 
     const handleRemoveProduct = (product: Product) => {
         removeProductSelected(product);
+    }
+
+    const handleBuy = async () => {
+        const buyerId =  buyers[Math.floor(Math.random() * buyers.length)];
+        await buyProducts(productsSelected, buyerId);
     }
 
     return (
@@ -31,9 +43,9 @@ export default function Cart() {
                         productsSelected.map((product, index) => (
                             <View style={styles.selectedProduct} key={index}>
                                 <Text style={styles.textColors}>
-                                    {product.title + ': '}
+                                    {product.id.slice(0, 7) + ': '}
                                     <Text style={styles.textColors}>
-                                        {product.quantity + ' x $' + product.price}
+                                        {product.qty + ' x $' + product.price}
                                     </Text>
                                 </Text>
                                 <TouchableOpacity onPress={() => handleRemoveProduct(product)}>
@@ -44,20 +56,21 @@ export default function Cart() {
                                 </TouchableOpacity>
                             </View>
                         )))
-                    : <Text style={styles.textColors}>No products selected</Text>
+                    :
+                        <Text style={styles.textColors}>No products selected</Text>
                     }
                     {productsSelected.length > 0 && (
                         <View style={styles.total}>
                             <Text style={styles.textColors}>
-                                Total: ${productsSelected.reduce((acc, product) => acc + product.price * product.quantity, 0)}
+                                Total: ${productsSelected.reduce((acc, product) => acc + product.price * product.qty, 0)}
                             </Text>
                         </View>
                     )}
                 </View>
-                <Button style={styles.button} mode={"contained"}>
+                <Button onPress={handleBuy} style={styles.button} mode={"contained"}>
                     Buy
                 </Button>
-        </ScrollView>
+            </ScrollView>
         </SafeAreaView>
     );
 }
