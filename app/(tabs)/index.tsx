@@ -8,33 +8,32 @@ import {Product} from "@/utils/types";
 
 const arrayOfProducts = [
   {
-    title: 'MacBook Air',
+    id: 'MacBook Air',
     price: 100,
-    source: 'https://7x7.com.ar/wp-content/uploads/2023/08/MacBook-Air-con-M1-1000x600-1.jpg',
+    qty: 1,
   },
   {
-    title: 'Microsoft Book',
+    id: 'Microsoft Book',
     price: 200,
-    source: 'https://7x7.com.ar/wp-content/uploads/2023/08/MacBook-Air-con-M1-1000x600-1.jpg',
+    qty: 1,
   },
   {
-    title: 'Lenovo Legion',
+    id: 'Lenovo Legion',
     price: 300,
-    source: 'https://7x7.com.ar/wp-content/uploads/2023/08/MacBook-Air-con-M1-1000x600-1.jpg',
+    qty: 1,
   },
 ];
 
 export default function HomeScreen() {
 
   const [products, setProducts] = useState<Product[]>([])
+  const { reFetchProducts } = useProductsSelected();
 
   useEffect(() => {
     async function fetch() {
-      const response = await getProducts();
-      if (response) {
-        const products = response.data;
-        setProducts(products)
-      }
+        const products = await getProducts();
+        // @ts-ignore
+      setProducts(products);
     }
     fetch();
   }, []);
@@ -44,16 +43,15 @@ export default function HomeScreen() {
   return (
       <SafeAreaView style={styles.pageContainer}>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>Add To Cart</Text>
+          <Text style={styles.title}>See products</Text>
         </View>
         <ScrollView contentContainerStyle={styles.productContainer}>
           {products.map((product, index) => (
               <CardComponent
                   key={index}
-                  title={product.id}
-                  price={product.price}
-                  source={"https://7x7.com.ar/wp-content/uploads/2023/08/MacBook-Air-con-M1-1000x600-1.jpg"}
+                  product={product}
                   addProduct={addProductSelected}
+                  reFetch={reFetchProducts}
               />
           ))}
         </ScrollView>

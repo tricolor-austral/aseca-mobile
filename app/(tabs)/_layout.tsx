@@ -17,13 +17,19 @@ export default function TabLayout() {
             <Tabs.Screen
                 name="index"
                 options={{
-                    title: 'Buy',
+                    title: 'Stock',
+                }}
+            />
+            <Tabs.Screen
+                name="create"
+                options={{
+                    title: 'Create',
                 }}
             />
             <Tabs.Screen
                 name="explore"
                 options={{
-                    title: 'Cart',
+                    title: 'Orders',
                 }}
             />
         </Tabs>

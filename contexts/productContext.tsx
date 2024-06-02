@@ -1,10 +1,12 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, {createContext, ReactNode, useContext, useState} from 'react';
 import {Product} from "@/utils/types";
+import {getProducts} from "@/api";
 
 interface ProductsContextType {
     productsSelected: Product[];
     addProductSelected: (product: Product) => void;
     removeProductSelected: (product: Product) => void;
+    reFetchProducts: () => void;
 }
 
 const ProductsContext = createContext<ProductsContextType | undefined>(undefined);
@@ -33,8 +35,17 @@ export const ProductsProvider: React.FC<ProductsProviderProps> = ({ children }) 
         );
     };
 
+    const reFetchProducts = async () => {
+        return await getProducts();
+    }
+
     return (
-        <ProductsContext.Provider value={{ productsSelected, addProductSelected, removeProductSelected }}>
+        <ProductsContext.Provider value={{
+            productsSelected,
+            addProductSelected,
+            removeProductSelected,
+            reFetchProducts,
+        }}>
             {children}
         </ProductsContext.Provider>
     );

@@ -1,49 +1,49 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import {StyleSheet, Text, TextInput, View} from 'react-native';
 import { Card, Button } from 'react-native-paper';
 import {Product} from "@/utils/types";
+import {addStock} from "@/api";
 
 interface CardProps {
-    title: string;
-    price: number;
-    source: string;
+    product: Product;
     addProduct: (product: Product) => void;
+    reFetch: () => void;
 }
-export const CardComponent = ({ title, price, source, addProduct }: CardProps) => {
+export const CardComponent = ({ product, addProduct, reFetch }: CardProps) => {
+    const { id, price, qty, name } = product;
     const [quantity, setQuantity] = useState('');
 
-    const handleAddProduct = () => {
+    const handleAddStock = () => {
         if (quantity) {
-            const product: Product = {
-                id: title,
-                price,
-                qty: parseInt(quantity),
-            };
-            addProduct(product);
-            setQuantity('');
+            setQuantity('')
+            addStock(id, parseInt(quantity))
         }
     }
 
     return (
         <Card style={styles.card}>
             <Card.Title
-                title={title}
+                title={name}
                 subtitle={`$${price}`}
                 titleStyle={styles.title}
                 subtitleStyle={styles.subtitle}
             />
-            <Card.Cover source={{ uri: source }} style={styles.cover} />
+            <Card.Cover
+                source={{ uri: 'https://7x7.com.ar/wp-content/uploads/2023/08/MacBook-Air-con-M1-1000x600-1.jpg' }}
+                style={styles.cover}
+            />
             <View style={styles.inputContainer}>
                 <TextInput
                     style={styles.input}
                     value={quantity}
                     onChangeText={setQuantity}
                     keyboardType="numeric"
-                    placeholder="Quantity"
+                    placeholder="Add Stock"
                 />
             </View>
             <Card.Actions style={styles.actions}>
-                <Button mode="contained" onPress={handleAddProduct}>
+                <Text>Stock: {qty}</Text>
+                <Button mode="contained" onPress={handleAddStock}>
                     Add
                 </Button>
             </Card.Actions>
