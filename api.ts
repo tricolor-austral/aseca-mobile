@@ -1,7 +1,7 @@
 import {Product} from "@/utils/types";
 import axios from "axios";
 
-const url = 'https://1b50-24-232-109-150.ngrok-free.app';
+const url = 'https://fc43-181-169-17-49.ngrok-free.app';
 
 export const buyProducts = async (products: Product[], buyerId: string) => {
     const data = {

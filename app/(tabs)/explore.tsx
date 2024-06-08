@@ -88,13 +88,13 @@ export default function Cart() {
     return (
         <SafeAreaView style={styles.pageContainer}>
             <View style={styles.titleContainer}>
-                <Text style={styles.title}>Buy Product</Text>
+                <Text style={styles.title}>See orders</Text>
             </View>
             <Animated.ScrollView contentContainerStyle={styles.productContainer}>
                 <View style={styles.justifyContent}>
                     <List.AccordionGroup>
                         {
-                            orders.map((order, index) => (
+                            orders?.map((order, index) => (
                                 <List.Accordion
                                     key={order.orderId}
                                     title={`Order ID: ${order.orderId}`}
@@ -105,7 +105,7 @@ export default function Cart() {
                                 >
                                     <Text style={styles.textColors}>Order ID: {order.orderId}</Text>
                                     <Text style={styles.textColors}>Status: {order.status}</Text>
-                                    {order.products.map((product) => (
+                                    {order?.products?.map((product) => (
                                         <View key={product.productIds}>
                                             <Text style={styles.textColors}>---------------------------</Text>
                                             <Text style={styles.textColors}>- Product ID: {product.productIds}</Text>

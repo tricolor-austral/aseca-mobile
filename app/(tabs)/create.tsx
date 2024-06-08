@@ -22,7 +22,13 @@ export default function Create() {
                 parseInt(quantity),
                 supplier,
             )
-                .then(() => reFetchProducts());
+                .then(() => {
+                    setName('');
+                    setPrice('');
+                    setQuantity('');
+                    setSupplier('');
+                    reFetchProducts()
+                });
         }
     }
 
